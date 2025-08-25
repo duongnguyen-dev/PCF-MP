@@ -1,0 +1,15 @@
+artifact_uri: mlflow-artifacts:/452806047677783336/35e4b448cc4d43aeb5cb6cf083fd937e/artifacts
+deleted_time: 1756106772580
+end_time: null
+entry_point_name: ''
+experiment_id: '452806047677783336'
+lifecycle_stage: deleted
+run_id: 35e4b448cc4d43aeb5cb6cf083fd937e
+run_name: intelligent-bat-687
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1756106231677
+status: 1
+tags: []
+user_id: haiduong

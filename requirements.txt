@@ -1,0 +1,18 @@
+# ML & DL
+torch==2.8.0
+scikit-learn==1.7.1
+
+# Data processing
+pandas==2.3.1
+natsort==8.4.0
+pykalman==0.10.1
+
+# Model Tracking
+mlflow==3.3.0
+
+# Data visualization
+dash==3.2.0
+
+# Logging
+loguru==0.7.3
+python-dotenv==1.1.1

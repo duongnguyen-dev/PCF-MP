@@ -1,0 +1,14 @@
+artifact_uri: mlflow-artifacts:/452806047677783336/3d56ed0e73b544238b8aae73d8fc4af2/artifacts
+end_time: 1756106389149
+entry_point_name: ''
+experiment_id: '452806047677783336'
+lifecycle_stage: active
+run_id: 3d56ed0e73b544238b8aae73d8fc4af2
+run_name: efficient-hawk-640
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1756106365632
+status: 4
+tags: []
+user_id: haiduong

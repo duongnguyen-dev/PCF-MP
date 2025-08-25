@@ -1,0 +1,11 @@
+artifact_location: mlflow-artifacts:/452806047677783336/models/m-d7db9cb102f845ea9d1436cf7f49c429/artifacts
+creation_timestamp: 1756106652583
+experiment_id: '452806047677783336'
+last_updated_timestamp: 1756106652583
+lifecycle_stage: active
+model_id: m-d7db9cb102f845ea9d1436cf7f49c429
+model_type: ''
+name: SVR-model
+source_run_id: f885054d9fe841cfb552f56e562a4396
+status: 1
+status_message: null

@@ -1,0 +1,14 @@
+artifact_uri: mlflow-artifacts:/452806047677783336/2f26acf8c5054e388234bb04d67cd7fd/artifacts
+end_time: 1756107270213
+entry_point_name: ''
+experiment_id: '452806047677783336'
+lifecycle_stage: active
+run_id: 2f26acf8c5054e388234bb04d67cd7fd
+run_name: bedecked-tern-471
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1756107247452
+status: 3
+tags: []
+user_id: haiduong

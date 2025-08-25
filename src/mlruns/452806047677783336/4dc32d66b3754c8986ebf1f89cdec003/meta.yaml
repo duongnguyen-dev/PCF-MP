@@ -1,0 +1,14 @@
+artifact_uri: mlflow-artifacts:/452806047677783336/4dc32d66b3754c8986ebf1f89cdec003/artifacts
+end_time: 1756108206807
+entry_point_name: ''
+experiment_id: '452806047677783336'
+lifecycle_stage: active
+run_id: 4dc32d66b3754c8986ebf1f89cdec003
+run_name: dashing-wolf-872
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1756108072944
+status: 3
+tags: []
+user_id: haiduong
