@@ -1,4 +1,5 @@
 import os
+import math
 import torch
 import numpy as np
 import pandas as pd
@@ -100,7 +101,134 @@ class CuttingForceTaguchiDataset:
         combined_test_scaled = self.scaler.transform(combined_X_test)
     
         return combined_train_scaled, combined_y_train, combined_test_scaled, combined_y_test
+
+class CuttingForceWindowDataset():
+    def __init__(self, root_dir: str, horizon: int, window: int, sampling_rate: int = 10000, d: int = 16, train_size: float = 0.8):
+        self.root_dir = root_dir
+        self.horizon = horizon
+        self.window = window
+        self.d = d
+        self.sampling_rate = sampling_rate
+        self.train_size = train_size
+        self.scaler = StandardScaler()
+        result = self.prepare()
+        if result != None:
+            self.X_train, self.y_train, self.X_test, self.y_test = result
+        else:
+            raise ValueError("prepare() return None unexpectedly")
     
+    def calculate_rpm(self, vc: int):
+        return math.floor((1000 * vc) / (math.pi * self.d))
+    
+    # def calculate_window(self, rpm: int):
+    #     """
+    #     Look back step (window)
+    #     """
+    #     return math.floor((self.sampling_rate * 60) / rpm)
+    
+    @staticmethod
+    def calculate_tpf(rpm: int, tn: np.array):
+        """
+        Calculating Tooth Passing Frequency that automatically identify the starting time of the cutting process
+        """
+        return np.sin((rpm / 60) * tn)
+    
+    @staticmethod
+    def make_window(x, horizon: int, window: int):
+        """
+        Turns a 1D array into a 2D array of sequential window
+        - window: the number of past data
+        - horizon: the number of future values that we want to predict based on the number of past values (window)
+        """
+        # Step 1: Create a window of specific window size (add horizon on the end)
+        window_step = np.expand_dims(np.arange(window + horizon), axis=0)
+        logger.info(f"Window step: {window_step}")
+        
+        # Step 2: Create a 2D array of multiple window steps
+        window_indexes = window_step + np.expand_dims(np.arange(len(x)-(window+ horizon -1)), axis=0).T
+        logger.info(f"Window indexes: {window_indexes.shape}")
+        
+        # Step 3: Index on the target array (time series) with 2D array of multiple window steps
+        windowed_array = x[window_indexes]
+        
+        return windowed_array
+        
+    @staticmethod
+    def get_labelled_windows(x, horizon):
+        """
+        Creates labels for windowed dataset.
+        Input: [1, 2, 3, 4, 5, 6] -> Output: ([1, 2, 3, 4, 5], [6])
+        """   
+        return x[:, :-horizon], x[:, -horizon:, 1:4]
+    
+    def prepare(self):
+        if not os.path.isdir(self.root_dir):
+            raise FileNotFoundError(f"Root directory does not exist: {self.root_dir}")
+        
+        taguchi_matrix_path = os.path.join(self.root_dir, "taguchi_matrix.csv")
+        if not os.path.exists(taguchi_matrix_path):
+            raise FileNotFoundError(f"Taguchi Matrix file not found in the dataset folder: {taguchi_matrix_path}")
+        
+        taguchi_matrix_df = pd.read_csv(taguchi_matrix_path)
+        if len(taguchi_matrix_df) == 0:
+            return None
+
+        data_dir = os.path.join(self.root_dir, "data")
+        if not os.path.isdir(data_dir):
+            raise FileNotFoundError(f"Data directory does not exist: {data_dir}")
+        
+        ds = []
+        for f in os.listdir(data_dir):
+            ds.append(f"{data_dir}/{f}")
+            
+        data_files = natsorted(ds)[:2]
+
+        if len(data_files) != len(taguchi_matrix_df):
+            raise Exception("The number of dataset files doesn't match the number of experiments")
+
+        list_X_train, list_X_test, list_y_train, list_y_test = [], [], [], []
+        for i, f in enumerate(data_files):
+            df = pd.read_csv(f) 
+            
+            # Remove zero values in the cutting force data
+            df.drop(df[(df['Fx'] == 0.0) & (df['Fy'] == 0.0) & (df['Fz'] == 0.0)].index, inplace=True)
+            
+            # Attach Taguchi parameters (row i) to every row in this df
+            for col in taguchi_matrix_df.columns:
+                df[col] = taguchi_matrix_df.loc[i, col]
+            
+            rpm = self.calculate_rpm(df["Vc"][0])
+            # Apply the function to the tn column
+            df['tpf'] = self.calculate_tpf(rpm, df["Time"])
+            
+            # Windowing split
+            split_size = int(self.train_size * len(df))
+            df_array = df.iloc[:, :].values
+            df_train, df_test = df_array[:split_size], df_array[split_size:]
+            train_windowed_array = self.make_window(df_train, horizon=self.horizon, window=self.window)
+            test_windowed_array = self.make_window(df_test, horizon=self.horizon, window=self.window)
+            
+            X_train, y_train = self.get_labelled_windows(train_windowed_array, horizon=self.horizon)
+            X_test, y_test = self.get_labelled_windows(test_windowed_array, horizon=self.horizon)
+            
+            list_X_train.append(X_train)
+            list_X_test.append(X_test)
+            list_y_train.append(y_train)
+            list_y_test.append(y_test)
+
+            logger.info(f"Processed {f} successfully.")
+        # Concatenate all loaded dataframe
+        combined_X_train = np.concatenate(list_X_train, axis=0)
+        combined_X_test = np.concatenate(list_X_test, axis=0)
+        combined_y_train = np.concatenate(list_y_train, axis=0)
+        combined_y_test = np.concatenate(list_y_test, axis=0)
+
+        # Normalization
+        combined_train_scaled = self.scaler.fit_transform(combined_X_train)
+        combined_test_scaled = self.scaler.transform(combined_X_test)
+    
+        return combined_train_scaled, combined_y_train, combined_test_scaled, combined_y_test
+
 class PytorchWrapper(Dataset):
     def __init__(self, X, y):
         self.X = torch.tensor(X, dtype=torch.float32)

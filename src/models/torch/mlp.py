@@ -56,8 +56,8 @@ class MLPModel(BaseModel):
             train_ds = PytorchWrapper(X_train, y_train)
             test_ds = PytorchWrapper(X_test, y_test)
 
-            train_loader = DataLoader(train_ds, batch_size=16, shuffle=False, num_workers=4)
-            test_loader = DataLoader(test_ds, batch_size=16, num_workers=4, shuffle=False)
+            train_loader = DataLoader(train_ds, batch_size=32, shuffle=False, num_workers=4)
+            test_loader = DataLoader(test_ds, batch_size=32, num_workers=4, shuffle=False)
             self.model.to(device)
         
             for epoch in range(epochs):

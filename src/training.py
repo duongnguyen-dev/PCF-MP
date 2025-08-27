@@ -4,7 +4,7 @@ import torch.nn as nn
 import matplotlib.pyplot as plt
 from models.sklearn.svr import SVRModel
 from models.torch.mlp import MLPModel
-from dataset import CuttingForceTaguchiDataset
+from dataset import CuttingForceTaguchiDataset, CuttingForceWindowDataset
 from configs import DATASET_DIR
 
 def train_svr_model():
@@ -30,19 +30,22 @@ def train_svr_model():
 def train_mlp_model():
     device = "cuda" if torch.cuda.is_available() else "cpu"
     epochs = 5
-    dataset = CuttingForceTaguchiDataset(root_dir=os.path.expanduser(DATASET_DIR), train_size=0.8)
+    dataset = CuttingForceWindowDataset(root_dir=os.path.expanduser(DATASET_DIR),
+                                        horizon=1,
+                                        window=300,
+                                        train_size=0.8)
     X_train, y_train, X_test, y_test = dataset.X_train, dataset.y_train, dataset.X_test, dataset.y_test
 
-    params = {
-        "device": device,
-        "epochs": epochs,
-        "input_dim": 8, 
-        "output_dim": 3
-    }
+    # params = {
+    #     "device": device,
+    #     "epochs": epochs,
+    #     "input_dim": 8, 
+    #     "output_dim": 3
+    # }
 
-    model = MLPModel(params, auto_log=False)
+    # model = MLPModel(params, auto_log=False)
 
-    model.train(X_train, y_train, X_test, y_test)
+    # model.train(X_train, y_train, X_test, y_test)
 
 if __name__ == "__main__":
     train_mlp_model()
