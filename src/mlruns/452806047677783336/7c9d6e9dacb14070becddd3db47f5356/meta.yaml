@@ -1,0 +1,14 @@
+artifact_uri: mlflow-artifacts:/452806047677783336/7c9d6e9dacb14070becddd3db47f5356/artifacts
+end_time: 1756110819136
+entry_point_name: ''
+experiment_id: '452806047677783336'
+lifecycle_stage: active
+run_id: 7c9d6e9dacb14070becddd3db47f5356
+run_name: mysterious-ray-75
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1756110803716
+status: 4
+tags: []
+user_id: haiduong

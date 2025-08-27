@@ -1,0 +1,14 @@
+artifact_uri: mlflow-artifacts:/452806047677783336/305ecc7235734e139ec9f8177a7c1f30/artifacts
+end_time: 1756111757875
+entry_point_name: ''
+experiment_id: '452806047677783336'
+lifecycle_stage: active
+run_id: 305ecc7235734e139ec9f8177a7c1f30
+run_name: bemused-deer-645
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1756110902137
+status: 3
+tags: []
+user_id: haiduong

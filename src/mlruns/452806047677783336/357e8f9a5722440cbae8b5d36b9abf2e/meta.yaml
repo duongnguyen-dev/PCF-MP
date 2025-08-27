@@ -1,0 +1,14 @@
+artifact_uri: mlflow-artifacts:/452806047677783336/357e8f9a5722440cbae8b5d36b9abf2e/artifacts
+end_time: 1756116039447
+entry_point_name: ''
+experiment_id: '452806047677783336'
+lifecycle_stage: active
+run_id: 357e8f9a5722440cbae8b5d36b9abf2e
+run_name: capricious-shrew-417
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1756113872592
+status: 3
+tags: []
+user_id: haiduong

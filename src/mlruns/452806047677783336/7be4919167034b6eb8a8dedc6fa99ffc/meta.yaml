@@ -1,0 +1,15 @@
+artifact_uri: mlflow-artifacts:/452806047677783336/7be4919167034b6eb8a8dedc6fa99ffc/artifacts
+deleted_time: 1756110674752
+end_time: null
+entry_point_name: ''
+experiment_id: '452806047677783336'
+lifecycle_stage: deleted
+run_id: 7be4919167034b6eb8a8dedc6fa99ffc
+run_name: traveling-zebra-750
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1756110470155
+status: 1
+tags: []
+user_id: haiduong

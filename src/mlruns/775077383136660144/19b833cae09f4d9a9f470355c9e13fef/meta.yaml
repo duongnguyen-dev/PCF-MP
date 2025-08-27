@@ -1,0 +1,14 @@
+artifact_uri: mlflow-artifacts:/775077383136660144/19b833cae09f4d9a9f470355c9e13fef/artifacts
+end_time: 1756203620650
+entry_point_name: ''
+experiment_id: '775077383136660144'
+lifecycle_stage: active
+run_id: 19b833cae09f4d9a9f470355c9e13fef
+run_name: skillful-fowl-400
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1756202576857
+status: 4
+tags: []
+user_id: haiduong

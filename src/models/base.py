@@ -5,7 +5,6 @@ class BaseModel(ABC):
     def __init__(self, params):
         super().__init__()
         self.params = params
-        self.model = self.build_model()
 
     @abstractmethod
     def build_model(self) -> object:
@@ -13,7 +12,7 @@ class BaseModel(ABC):
         pass
 
     @abstractmethod
-    def train(self, X_train, y_train):
+    def train(self, X_train, y_train, X_test, y_test):
         """Training Procedure"""
         pass
 
@@ -29,13 +28,14 @@ class BaseModel(ABC):
         pass
 
     @abstractmethod
-    def _log_model(self, X_train):
+    def _log_model(self, X_train=None):
         """Log model using MLFlow"""
         pass
 
-    # def log_metrics(self):
-    #     """Log metrics to MLflow"""
-    #     mlflow.log_metrics(self.metrics)
+    @staticmethod
+    def log_metrics(metrics, step=None):
+        """Log metrics to MLflow"""
+        mlflow.log_metrics(metrics, step=step)
         
     def log_params(self):
         """Log parameters to MLflow"""

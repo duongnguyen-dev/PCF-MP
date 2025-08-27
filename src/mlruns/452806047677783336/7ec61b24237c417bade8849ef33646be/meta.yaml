@@ -1,0 +1,15 @@
+artifact_uri: mlflow-artifacts:/452806047677783336/7ec61b24237c417bade8849ef33646be/artifacts
+deleted_time: 1756166633808
+end_time: null
+entry_point_name: ''
+experiment_id: '452806047677783336'
+lifecycle_stage: deleted
+run_id: 7ec61b24237c417bade8849ef33646be
+run_name: popular-fawn-597
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1756130270027
+status: 1
+tags: []
+user_id: haiduong

@@ -27,13 +27,13 @@ class SVRModel(BaseModel):
     def build_model(self):
         return MultiOutputRegressor(SVR(**self.params))
     
-    def train(self, X_train, y_train):
+    def train(self, X_train, y_train, X_test, y_test):
         with mlflow.start_run():
             self.model.fit(X_train, y_train)
 
             self.log_params()
-            # self.log_metrics()
-            # self._log_model(X_train)
+            metrics = self.eval(X_test, y_test)
+            self.log_metrics(metrics)
     
     @staticmethod
     def predict(model_uri: str, sample):
@@ -55,10 +55,11 @@ class SVRModel(BaseModel):
         
         return metrics
 
-    def _log_model(self, X_train):
-        log_model(
-            sk_model=self.model,
-            name="SVR-model",
-            input_example=X_train,
-            registered_model_name="SVR-reg-model"
-        )
+    def _log_model(self, X_train=None):
+        if X_train != None:
+            log_model(
+                sk_model=self.model,
+                name="SVR-model",
+                input_example=X_train,
+                registered_model_name="SVR-reg-model"
+            )

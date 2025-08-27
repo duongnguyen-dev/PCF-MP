@@ -1,0 +1,14 @@
+artifact_uri: mlflow-artifacts:/775077383136660144/42d3c4e14c86442f8f8e1fe69cb7ca85/artifacts
+end_time: 1756205416484
+entry_point_name: ''
+experiment_id: '775077383136660144'
+lifecycle_stage: active
+run_id: 42d3c4e14c86442f8f8e1fe69cb7ca85
+run_name: sassy-cub-441
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1756205415998
+status: 4
+tags: []
+user_id: haiduong
