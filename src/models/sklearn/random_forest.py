@@ -1,14 +1,14 @@
 import os
 import mlflow
-from sklearn.svm import SVR
-from sklearn.multioutput import MultiOutputRegressor
+import numpy as np
+from sklearn.ensemble import RandomForestRegressor
 from sklearn.metrics import mean_absolute_error, r2_score
 from mlflow.sklearn import autolog, log_model, load_model
 from loguru import logger
 from dotenv import load_dotenv
 from models.base import BaseModel
 
-class SVRModel(BaseModel):
+class RandomForestModel(BaseModel):
     def __init__(self, params, auto_log: bool):
         super().__init__(params)
         load_dotenv()
@@ -17,7 +17,7 @@ class SVRModel(BaseModel):
             raise ValueError("MLFLOW_TRACKING_URI environment variable should not be None")
         else:
             mlflow.set_tracking_uri(tracking_uri)
-            mlflow.set_experiment("SVR Experiments")
+            mlflow.set_experiment("Random Forest Experiments")
 
         self.model = self.build_model()
         if auto_log:
@@ -25,7 +25,7 @@ class SVRModel(BaseModel):
             autolog()
 
     def build_model(self):
-        return MultiOutputRegressor(SVR(**self.params))
+        return RandomForestRegressor(**self.params)
     
     def train(self, X_train, y_train, X_test, y_test):
         with mlflow.start_run():
@@ -34,7 +34,8 @@ class SVRModel(BaseModel):
             self.log_params()
             metrics = self.eval(X_test, y_test)
             self.log_metrics(metrics)
-            self._log_model(X_train[0])
+            mlflow.log_artifact("")
+            self._log_model(np.expand_dims(X_train[0], axis=0))
     
     @staticmethod
     def predict(model_uri: str, sample):
@@ -59,7 +60,7 @@ class SVRModel(BaseModel):
     def _log_model(self, X_train):
         log_model(
             sk_model=self.model,
-            name="SVR-model",
+            name="RF-model",
             input_example=X_train,
-            registered_model_name="SVR-reg-model"
+            registered_model_name="RF-reg-model"
         )

@@ -1,6 +1,11 @@
 # ML & DL
 torch==2.8.0
 scikit-learn==1.7.1
+keras==3.10.0
+tensorflow==2.19.0
+tensorflow-macos==2.16.2
+tensorflow-metal==1.2.0
+pysindy==2.0.0
 
 # Data processing
 pandas==2.3.1

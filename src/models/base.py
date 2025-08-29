@@ -28,7 +28,7 @@ class BaseModel(ABC):
         pass
 
     @abstractmethod
-    def _log_model(self, X_train=None):
+    def _log_model(self, X_train):
         """Log model using MLFlow"""
         pass
 

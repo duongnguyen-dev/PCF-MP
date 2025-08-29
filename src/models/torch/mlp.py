@@ -12,7 +12,7 @@ from dataset import PytorchWrapper
 from sklearn.metrics import mean_absolute_error, r2_score
 
 class MLPRegression(nn.Module):
-    def __init__(self, input_dim=8, output_dim=3, **kwargs):
+    def __init__(self, input_dim=9, output_dim=3, **kwargs):
         super().__init__()
         self.layers = nn.Sequential(
             nn.Linear(input_dim, 64),
@@ -50,11 +50,12 @@ class MLPModel(BaseModel):
         self.model.to(device)
         
         criterion = nn.MSELoss()
-        optimizer = torch.optim.Adam(self.model.parameters(), lr=0.0001)
+        optimizer = torch.optim.Adam(self.model.parameters(), lr=0.001)
 
+        train_ds = PytorchWrapper(X_train, y_train)
+        test_ds = PytorchWrapper(X_test, y_test)
+        
         with mlflow.start_run():
-            train_ds = PytorchWrapper(X_train, y_train)
-            test_ds = PytorchWrapper(X_test, y_test)
 
             train_loader = DataLoader(train_ds, batch_size=32, shuffle=False, num_workers=4)
             test_loader = DataLoader(test_ds, batch_size=32, num_workers=4, shuffle=False)
@@ -119,8 +120,6 @@ class MLPModel(BaseModel):
                     f"Train Loss: {train_loss:.4f} | Val Loss: {val_loss:.4f} | "
                     f"Train MAE: {train_mae:.4f} | Val MAE: {val_mae:.4f} | "
                     f"Train R2: {train_r2:.4f} | Val R2: {val_r2:.4f}")
-                
-                self._log_model()
 
     def _log_model(self, X_train=None):
         log_model(self.model, "mlp_model")
